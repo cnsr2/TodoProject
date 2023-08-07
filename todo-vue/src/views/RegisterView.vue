@@ -33,6 +33,12 @@ async function RegisterFn() {
   }
   refReset()
 }
+
+async function test() {
+  console.log('basıldı')
+  const res = await axios('http://localhost:5292/api/User')
+  alert(res)
+}
 </script>
 
 <template>
@@ -50,6 +56,7 @@ async function RegisterFn() {
       <div class="buttons">
         <router-link to="/">Login</router-link>
         <button @click.prevent="RegisterFn">Register</button>
+        <button @click.prevent="test">Userları Getir</button>
       </div>
     </div>
   </main>
