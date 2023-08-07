@@ -57,7 +57,7 @@ namespace TodoProject.Controllers
             {
                 todoText = text,
                 userId = tempUser.Id,
-                isActive = true,
+                isDone = false,
             };
             _dbContext.Todo.Add(tempTodo);
 
@@ -70,7 +70,7 @@ namespace TodoProject.Controllers
             var updatedTodo = _dbContext.Todo.Find(todoId);
             if (updatedTodo == null)
                 NotFound("User Not Found");
-            updatedTodo.isActive = _boolean;
+            updatedTodo.isDone = _boolean;
             _dbContext.Todo.Update(updatedTodo);
             await _dbContext.SaveChangesAsync();
             return Ok(updatedTodo);

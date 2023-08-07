@@ -10,8 +10,7 @@
     {
         public int todoId { get; set; }
         public string todoText { get; set; }
-        public bool isActive { get; set; }
-
+        public bool isDone { get; set; }
         public int userId { get; set; }
     }
 }

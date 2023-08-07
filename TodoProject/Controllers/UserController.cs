@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using TodoProject.Dtos;
 using TodoProject.Models;
@@ -30,7 +31,7 @@ namespace TodoProject.Controllers
         }
         [HttpPost("Register")]
         public async Task<ActionResult<User>> RegisterUser(RegisterSet model)
-            {
+        {
             var tempUser = _dbContext.Users.FirstOrDefault(x => x.userName == model.name);
             if (tempUser != null)
             {
@@ -49,9 +50,9 @@ namespace TodoProject.Controllers
             }
         }
         [HttpPost("Login")]
-        public async Task<ActionResult<User>> LoginUser(RegisterSet model)
+        public async Task<ActionResult<User>> LoginUser(LoginSet model)
         {
-            var userCheck = _dbContext.Users.FirstOrDefault(x => x.userName  == model.name);
+            var userCheck = _dbContext.Users.FirstOrDefault(x => x.userName == model.name);
             if (userCheck == null)
             {
                 return NotFound("User Not Found");
@@ -60,9 +61,17 @@ namespace TodoProject.Controllers
             {
                 if (_dbContext.Users != null)
                 {
-                        if (userCheck.userPassword == model.pw)
+                    if (userCheck.userPassword == model.pw)
+                    {
+                        List<Todo> todoList = new List<Todo>();
+                        foreach (var item in _dbContext.Todo)
                         {
-                            return Ok();
+                            if (userCheck.Id == item.userId)
+                            {
+                                todoList.Add(item);
+                            }
+                        }
+                        return Ok(todoList);
                     }
                     return BadRequest(new { error = "Wrong Password" });
 
