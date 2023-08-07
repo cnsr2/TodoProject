@@ -42,7 +42,7 @@ namespace TodoProject.Controllers
                 User user = new User { userName = model.name, userPassword = model.pw };
                 _dbContext.Users.Add(user);
                 await _dbContext.SaveChangesAsync();
-                return Ok(user);
+                return Ok(user.Id);
             }
             else
             {
@@ -71,7 +71,8 @@ namespace TodoProject.Controllers
                                 todoList.Add(item);
                             }
                         }
-                        return Ok(todoList);
+                        UserTodo newUser = new UserTodo() { todoList = todoList , userId = userCheck.Id};
+                        return Ok(newUser);
                     }
                     return BadRequest(new { error = "Wrong Password" });
 
