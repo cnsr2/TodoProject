@@ -36,7 +36,7 @@ namespace TodoProject.Controllers
             {
                 return BadRequest("such a user already exists");
             }
-            if (RegisterValidate(model.name, model.pw, model.valPw))
+            if (RegisterValidate(model))
             {
                 User user = new User { userName = model.name, userPassword = model.pw };
                 _dbContext.Users.Add(user);
@@ -49,22 +49,22 @@ namespace TodoProject.Controllers
             }
         }
         [HttpPost("Login")]
-        public async Task<ActionResult<User>> LoginUser(string name, string pw)
+        public async Task<ActionResult<User>> LoginUser(RegisterSet model)
         {
-            var userCheck = _dbContext.Users.FirstOrDefault(x => x.userName  == name);
+            var userCheck = _dbContext.Users.FirstOrDefault(x => x.userName  == model.name);
             if (userCheck == null)
             {
                 return NotFound("User Not Found");
             }
-            if (name != null || pw != null)
+            if (model.name != null || model.pw != null)
             {
                 if (_dbContext.Users != null)
                 {
-                        if (userCheck.userPassword == pw)
+                        if (userCheck.userPassword == model.pw)
                         {
                             return Ok();
                     }
-                        return NotFound("Wrong Password");
+                    return BadRequest(new { error = "Wrong Password" });
 
                 }
                 return BadRequest(new { error = "Login Failed" });
@@ -88,15 +88,15 @@ namespace TodoProject.Controllers
             await _dbContext.SaveChangesAsync();
             return Ok();
         }
-        private bool RegisterValidate(string name, string pw, string valPw)
+        private bool RegisterValidate(RegisterSet model)
         {
-            if (name != null || pw != null || valPw != null)
+            if (model.name != null || model.pw != null || model.valPw != null)
             {
-                if (name.Length >= 3)
+                if (model.name.Length >= 3)
                 {
-                    if (pw.Length >= 8 && valPw.Length >= 8)
+                    if (model.pw.Length >= 8 && model.valPw.Length >= 8)
                     {
-                        if (pw == valPw)
+                        if (model.pw == model.valPw)
                         {
                             return true;
                         }
