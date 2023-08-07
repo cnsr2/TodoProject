@@ -1,3 +1,7 @@
+export type User = {
+  userId: number
+  todoList: TodoList
+}
 export type TodoList = Todo[]
 
 export type Todo = {

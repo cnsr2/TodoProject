@@ -43,7 +43,7 @@ async function RegisterFn() {
   )
   if (response.status == 200) {
     alert('Kayıt başarılı.')
-    userStore.login(response.data)
+    userStore.register(response.data)
     router.push('/todos')
   } else if (response.status == 400) {
     alert('Kullanıcı adı daha önce alınmış.')
