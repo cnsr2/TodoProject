@@ -18,7 +18,6 @@ namespace TodoProject.Controllers
         {
             _dbContext = dbContext;
         }
-        
         [HttpGet]
         public async Task<ActionResult<List<Todo>>> GetTodos()
         {
@@ -46,7 +45,6 @@ namespace TodoProject.Controllers
             }
             return Ok(tempTodoList);
         }
-
         [HttpPost("{id}")]
         public async Task<ActionResult<Todo>> CreateTodo(int id, string text)
         {

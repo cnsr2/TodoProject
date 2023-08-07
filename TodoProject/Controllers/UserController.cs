@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.InteropServices;
+using TodoProject.Dtos;
 using TodoProject.Models;
 
 namespace TodoProject.Controllers
@@ -17,7 +19,6 @@ namespace TodoProject.Controllers
         {
             _dbContext = dbContext;
         }
-
         [HttpGet]
         public async Task<ActionResult<List<User>>> GetUsers()
         {
@@ -27,18 +28,17 @@ namespace TodoProject.Controllers
             }
             return await _dbContext.Users.ToListAsync();
         }
-        [EnableCors("MyAllowSpecificOrigins")]
         [HttpPost("Register")]
-        public async Task<ActionResult<User>> RegisterUser(string name, string pw, string valPw)
-        {
-            var tempUser = _dbContext.Users.FirstOrDefault(x => x.userName == name);
+        public async Task<ActionResult<User>> RegisterUser(RegisterSet model)
+            {
+            var tempUser = _dbContext.Users.FirstOrDefault(x => x.userName == model.name);
             if (tempUser != null)
             {
                 return BadRequest("such a user already exists");
             }
-            if (RegisterValidate(name, pw, valPw))
+            if (RegisterValidate(model.name, model.pw, model.valPw))
             {
-                User user = new User { userName = name, userPassword = pw };
+                User user = new User { userName = model.name, userPassword = model.pw };
                 _dbContext.Users.Add(user);
                 await _dbContext.SaveChangesAsync();
                 return Ok(user);
@@ -72,7 +72,6 @@ namespace TodoProject.Controllers
             }
             return NotFound("username or password cannot be blank");
         }
-       
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
