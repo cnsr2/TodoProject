@@ -25,7 +25,7 @@ async function LoginFn() {
   buttonDisabled.value = true
   buttonValue.value = 'Checking user'
   const response = await axios.post(
-    'https://localhost:5292/api/User/Login',
+    'http://localhost:5292/api/User/Login',
     {
       name: userNameRef.value,
       pw: passwordRef.value
