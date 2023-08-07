@@ -1,11 +1,8 @@
-export type User = {
-  [x: string]: any
-  name: string
-  todoList: Todo[]
-}
+export type TodoList = Todo[]
 
 export type Todo = {
-  id: number
-  title: string
+  todoId: number
+  todoText: string
   isDone: boolean
+  userId: number
 }

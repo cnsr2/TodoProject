@@ -1,24 +1,23 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { type User, type Todo } from '../types'
+import { type TodoList, type Todo } from '../types'
 
 export const useUserStore = defineStore('user', () => {
-  const user = ref<User>({
-    name: '',
-    todoList: [
-      {
-        id: 0,
-        title: '',
-        isDone: false
-      }
-    ]
-  })
-  function login(user: User) {
-    user.value = user
+  const todoList = ref<TodoList>([
+    {
+      todoId: 0,
+      todoText: '',
+      isDone: false,
+      userId: 0
+    }
+  ])
+  function login(comingTodoList: TodoList) {
+    console.log('comingTodoList', comingTodoList)
+    // comingTodoList.value = comingTodoList
   }
-  function addTodo(todo: Todo) {
-    user.value.todoList.push(todo)
+  function addTodo(comingTodo: Todo) {
+    todoList.value.push(comingTodo)
   }
 
-  return { user, addTodo, login }
+  return { todoList, addTodo, login }
 })

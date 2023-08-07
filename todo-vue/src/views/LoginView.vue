@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user'
+import axios from 'axios'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -15,35 +16,43 @@ function refReset() {
   passwordRef.value = ''
 }
 
-function LoginFn() {
+async function LoginFn() {
+  if (userNameRef.value == '' || passwordRef.value == '') {
+    alert('Kullanıcı adı veya şifre boş olamaz.')
+    return
+  }
+  let check: boolean = false
   buttonDisabled.value = true
   buttonValue.value = 'Checking user'
-  let check: boolean = false
-  if (userNameRef.value == 'admin' && passwordRef.value == 'admin') {
-    buttonValue.value = 'Redirecting...'
+  const response = await axios.post(
+    'https://localhost:5292/api/User/Login',
+    {
+      name: userNameRef.value,
+      pw: passwordRef.value
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+  )
+  if (response.status == 200) {
     check = true
+    buttonValue.value = 'Redirecting...'
+    setTimeout(() => {
+      userStore.login(response.data)
+      router.push('/todos')
+    }, 500)
+  } else if (response.status == 400) {
+    alert('Şifre yanlış.')
+  } else if (response.status == 404) {
+    alert('Kullanıcı kayıtlı değil.')
+  }
+  if (check == false) {
+    buttonDisabled.value = false
+    buttonValue.value = 'Login'
   }
   refReset()
-  const userCheck = new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (check) {
-        resolve(true)
-      } else {
-        reject('Kullanıcı adı veya şifre hatalı.')
-      }
-    }, 1000)
-  })
-  userCheck
-    .then((res) => {
-      if (res) {
-        router.push('/todos')
-      }
-    })
-    .catch((err) => {
-      alert(err)
-      buttonDisabled.value = false
-      buttonValue.value = 'Login'
-    })
 }
 </script>
 
