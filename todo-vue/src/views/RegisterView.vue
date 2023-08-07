@@ -21,6 +21,8 @@ async function RegisterFn() {
     name: userNameRef.value,
     pw: passwordRef.value,
     valpw: passwordRef2.value
+  }, {
+      headers: { 'Content-Type': 'application/json' }
   })
   console.log(response)
   if (response.status == 200) {
@@ -36,8 +38,8 @@ async function RegisterFn() {
 
 async function test() {
   console.log('basıldı')
-  const res = await axios('http://localhost:5292/api/User')
-  alert(res)
+  const res = await axios('http://localhost:5292/api/Todo/3')
+    console.log(res)
 }
 </script>
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.InteropServices;
@@ -26,7 +27,7 @@ namespace TodoProject.Controllers
             }
             return await _dbContext.Users.ToListAsync();
         }
-
+        [EnableCors("MyAllowSpecificOrigins")]
         [HttpPost("Register")]
         public async Task<ActionResult<User>> RegisterUser(string name, string pw, string valPw)
         {

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using TodoProject.Models;
+using Microsoft.AspNetCore.Cors;
 
 namespace TodoProject.Controllers
 {
@@ -17,7 +18,7 @@ namespace TodoProject.Controllers
         {
             _dbContext = dbContext;
         }
-
+        
         [HttpGet]
         public async Task<ActionResult<List<Todo>>> GetTodos()
         {
