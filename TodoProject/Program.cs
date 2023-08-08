@@ -38,7 +38,7 @@ builder.Services.AddSwaggerGen(c =>
 var app = builder.Build();
 
 app.UseCors(x => x
-    .WithOrigins("http://localhost:5173","https://localhost:5173", "http://localhost:5292","https://localhost:5292")
+    .WithOrigins("http://localhost:5173","https://localhost:5173", "http://localhost:5292","https://localhost:5292","https://localhost:3536","http://localhost:3536","https://localhost:3535","http://localhost:3535")
     .AllowAnyMethod()
     .AllowAnyHeader()
     .SetIsOriginAllowed(origin => true)
