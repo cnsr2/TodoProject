@@ -6,20 +6,7 @@ import axios from 'axios'
 export const useUserStore = defineStore('user', () => {
   const userTodos = ref<User>({
     userId: 0,
-    todoList: [
-      {
-        todoId: 0,
-        todoText: 'test',
-        isDone: false,
-        userId: 0
-      },
-      {
-        todoId: 1,
-        todoText: 'test2',
-        isDone: true,
-        userId: 0
-      }
-    ]
+    todoList: []
   })
   function login(comingTodoList: User) {
     console.log('comingTodoList', comingTodoList)
@@ -31,11 +18,11 @@ export const useUserStore = defineStore('user', () => {
     userTodos.value.todoList = []
   }
   async function addTodo(comingTodoText: string) {
-    const response = await axios.post('http://localhost:5292/api/Todo/id', {
+    const response = await axios.post('http://localhost:5292/api/Todo/Post', {
       text: comingTodoText,
       id: userTodos.value.userId
     })
-    if (response.status == 200) {
+      if (response.status == 200) {
       const comingTodo: Todo = { ...response.data }
       userTodos.value.todoList.push(comingTodo)
     } else if (response.status == 404) {
@@ -45,8 +32,8 @@ export const useUserStore = defineStore('user', () => {
   async function toggleTodo(comingTodoId: number) {
     const todo = userTodos.value.todoList.find((todo) => todo.todoId == comingTodoId)
     if (todo) {
-      const response = await axios.put('http://localhost:5292/api/Todo', {
-        _boolean: !todo.isDone,
+      const response = await axios.post('http://localhost:5292/api/Todo/Update', {
+        boo: !todo.isDone,
         todoId: todo.todoId
       })
       if (response.status == 200) {
@@ -56,7 +43,9 @@ export const useUserStore = defineStore('user', () => {
   }
 
   async function removeTodo(comingTodoId: number) {
-    const response = await axios.delete(`http://localhost:5292/api/Todo/${comingTodoId}`)
+      const response = await axios.post(`http://localhost:5292/api/Todo/Delete`, {
+          todoId: comingTodoId
+      })
     if (response.status == 200) {
       userTodos.value.todoList = userTodos.value.todoList.filter(
         (todo) => todo.todoId != comingTodoId

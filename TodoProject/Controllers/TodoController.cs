@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using TodoProject.Models;
 using Microsoft.AspNetCore.Cors;
+using TodoProject.Dtos;
 
 namespace TodoProject.Controllers
 {
@@ -28,7 +29,7 @@ namespace TodoProject.Controllers
             return await _dbContext.Todo.ToListAsync();
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<Todo>>> GetTodosById(int id)
+        public async Task<ActionResult<List<Todo>>> GetTodosById(GetTodosByIdSet model)
         {
             if (_dbContext.Todo == null)
             {
@@ -37,7 +38,7 @@ namespace TodoProject.Controllers
             List<Todo> tempTodoList = new List<Todo>();
             foreach (var item in _dbContext.Todo)
             {
-                if (id == item.userId)
+                if (model.id == item.userId)
                 {
                     tempTodoList.Add(item);
 
@@ -45,17 +46,17 @@ namespace TodoProject.Controllers
             }
             return Ok(tempTodoList);
         }
-        [HttpPost("{id}")]
-        public async Task<ActionResult<Todo>> CreateTodo(int id, string text)
+        [HttpPost("Post")]
+        public async Task<ActionResult<Todo>> CreateTodo(CreateTodoSet model)
         {
-            var tempUser = _dbContext.Users.Find(id);
+            var tempUser = _dbContext.Users.Find(model.id);
             if (tempUser == null)
             {
                 return NotFound("User Not Found");
             }
             Todo tempTodo = new Todo
             {
-                todoText = text,
+                todoText = model.text,
                 userId = tempUser.Id,
                 isDone = false,
             };
@@ -64,21 +65,21 @@ namespace TodoProject.Controllers
             await _dbContext.SaveChangesAsync();
             return Ok(tempTodo);
         }
-        [HttpPut]
-        public async Task<ActionResult> UpdateTodo(int todoId, bool _boolean)
+        [HttpPost("Update")]
+        public async Task<ActionResult> UpdateTodo(UpdateTodoSet model)
         {
-            var updatedTodo = _dbContext.Todo.Find(todoId);
+            var updatedTodo = _dbContext.Todo.Find(model.todoId);
             if (updatedTodo == null)
-                NotFound("User Not Found");
-            updatedTodo.isDone = _boolean;
+                NotFound("User Not Found"); 
+            updatedTodo.isDone = model.boo;
             _dbContext.Todo.Update(updatedTodo);
             await _dbContext.SaveChangesAsync();
             return Ok(updatedTodo);
         }
-        [HttpDelete]
-        public async Task<ActionResult> DeleteTodo(int todoId)
+        [HttpPost("Delete")]
+        public async Task<ActionResult> DeleteTodo(DeleteTodoSet model)
         {
-            var deleteTodo = _dbContext.Todo.Find(todoId);
+            var deleteTodo = _dbContext.Todo.Find(model.todoId);
             if (deleteTodo == null)
             {
                 return NotFound("User Not Found");

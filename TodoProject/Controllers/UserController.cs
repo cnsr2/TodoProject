@@ -82,22 +82,6 @@ namespace TodoProject.Controllers
             }
             return NotFound("username or password cannot be blank");
         }
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
-        {
-            if (_dbContext.Users == null)
-            {
-                return NotFound();
-            }
-            var user = await _dbContext.Users.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            _dbContext.Users.Remove(user);
-            await _dbContext.SaveChangesAsync();
-            return Ok();
-        }
         private bool RegisterValidate(RegisterSet model)
         {
             if (model.name != null || model.pw != null || model.valPw != null)
