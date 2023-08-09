@@ -1,8 +1,12 @@
 <script setup lang="ts">
+import router from '@/router'
 import { useUserStore } from '@/stores/user'
 import { ref } from 'vue'
 
 const userStore = useUserStore()
+if (userStore.userTodos.userId == null) {
+  router.push('/')
+}
 const filter = ref<string>('all')
 const todoText = ref<string>('')
 const filterEnum: {
@@ -21,6 +25,10 @@ const addTodoFn = () => {
     alert(err)
   }
   todoText.value = ''
+}
+const logoutFn = () => {
+  userStore.logout()
+  router.push('/')
 }
 </script>
 
@@ -47,10 +55,13 @@ const addTodoFn = () => {
         </div>
       </li>
     </ul>
-    <div>
+    <div class="buttonGroup2">
       <button @click="() => changeFilter('all')">All</button>
       <button @click="() => changeFilter('active')">Active</button>
       <button @click="() => changeFilter('completed')">Completed</button>
+    </div>
+    <div class="buttonGroup2">
+      <button @click="logoutFn">Çıkış</button>
     </div>
   </div>
 </template>
@@ -60,7 +71,7 @@ const addTodoFn = () => {
   display: flex;
   flex-direction: column;
   gap: 1em;
-  width: 500px;
+  max-width: 480px;
 }
 ul {
   display: flex;
@@ -81,6 +92,22 @@ li {
 .buttonGroup {
   display: flex;
   gap: 5px;
-  text-decoration: unset;
+}
+.buttonGroup2 {
+  display: flex;
+  gap: 5px;
+  & button {
+    width: 100%;
+    padding: 0.5em;
+    border-radius: 10px;
+    border: 1px solid black;
+    cursor: pointer;
+  }
+}
+input {
+  width: 100%;
+  padding: 0.5em;
+  border-radius: 10px;
+  border: 1px solid black;
 }
 </style>

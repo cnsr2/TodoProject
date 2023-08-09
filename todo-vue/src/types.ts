@@ -1,5 +1,5 @@
 export type User = {
-  userId: number
+  userId: number | null
   todoList: TodoList
 }
 export type TodoList = Todo[]

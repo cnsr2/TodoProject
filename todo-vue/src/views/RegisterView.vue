@@ -55,7 +55,7 @@ async function RegisterFn() {
 </script>
 
 <template>
-  <main>
+  <div class="main2">
     <div>
       <div class="inputs">
         <h1>Register</h1>
@@ -71,44 +71,43 @@ async function RegisterFn() {
         <button @click.prevent="RegisterFn">Register</button>
       </div>
     </div>
-  </main>
+  </div>
 </template>
 
 <style scoped>
-@media screen and (max-width: 500px) {
-  main {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr;
-    border-radius: 20px;
-    place-items: center;
-    & .buttons {
-      margin-top: 2em;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      gap: 1em;
-      & button {
-        width: 80%;
-        padding: 0.5em;
-        border-radius: 10px;
-        border: 1px solid black;
-      }
+.main2 {
+  max-width: 480px;
+  display: grid;
+  grid-template-columns: 1fr;
+  border-radius: 20px;
+  place-items: center;
+  & .buttons {
+    margin-top: 2em;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    & button {
+      width: 80%;
+      padding: 0.5em;
+      border-radius: 10px;
+      border: 1px solid black;
+      cursor: pointer;
     }
+  }
 
-    & .inputs {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 1em;
-      & input {
-        width: 80%;
-        padding: 0.5em;
-        border-radius: 10px;
-        border: 1px solid black;
-      }
+  & .inputs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    & input {
+      width: 100%;
+      padding: 0.5em;
+      border-radius: 10px;
+      border: 1px solid black;
     }
   }
 }

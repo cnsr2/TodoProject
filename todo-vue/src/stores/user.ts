@@ -5,12 +5,18 @@ import axios from 'axios'
 
 export const useUserStore = defineStore('user', () => {
   const userTodos = ref<User>({
-    userId: 0,
+    userId: null,
     todoList: []
   })
   function login(comingTodoList: User) {
     console.log('comingTodoList', comingTodoList)
     userTodos.value = comingTodoList
+  }
+  function logout() {
+    userTodos.value = {
+      userId: null,
+      todoList: []
+    }
   }
   function register(comingUserId: number) {
     console.log('comingUserId', comingUserId)
@@ -22,7 +28,7 @@ export const useUserStore = defineStore('user', () => {
       text: comingTodoText,
       id: userTodos.value.userId
     })
-      if (response.status == 200) {
+    if (response.status == 200) {
       const comingTodo: Todo = { ...response.data }
       userTodos.value.todoList.push(comingTodo)
     } else if (response.status == 404) {
@@ -43,9 +49,9 @@ export const useUserStore = defineStore('user', () => {
   }
 
   async function removeTodo(comingTodoId: number) {
-      const response = await axios.post(`http://localhost:5292/api/Todo/Delete`, {
-          todoId: comingTodoId
-      })
+    const response = await axios.post(`http://localhost:5292/api/Todo/Delete`, {
+      todoId: comingTodoId
+    })
     if (response.status == 200) {
       userTodos.value.todoList = userTodos.value.todoList.filter(
         (todo) => todo.todoId != comingTodoId
@@ -53,5 +59,5 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  return { userTodos, addTodo, login, register, toggleTodo, removeTodo }
+  return { userTodos, addTodo, login, logout, register, toggleTodo, removeTodo }
 })
