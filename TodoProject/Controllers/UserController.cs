@@ -55,7 +55,7 @@ namespace TodoProject.Controllers
             var userCheck = _dbContext.Users.FirstOrDefault(x => x.userName == model.name);
             if (userCheck == null)
             {
-                return NotFound("User Not Found");
+                return NotFound();
             }
             if (model.name != null || model.pw != null)
             {
@@ -74,13 +74,13 @@ namespace TodoProject.Controllers
                         UserTodo newUser = new UserTodo() { todoList = todoList , userId = userCheck.Id};
                         return Ok(newUser);
                     }
-                    return BadRequest(new { error = "Wrong Password" });
+                    return BadRequest();
 
                 }
-                return BadRequest(new { error = "Login Failed" });
+                return BadRequest();
 
             }
-            return NotFound("username or password cannot be blank");
+            return NotFound();
         }
         private bool RegisterValidate(RegisterSet model)
         {

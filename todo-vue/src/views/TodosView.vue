@@ -20,10 +20,7 @@ const changeFilter = (comingFilter: string) => {
   filter.value = comingFilter
 }
 const addTodoFn = () => {
-  const err = userStore.addTodo(todoText.value)
-  if (err) {
-    alert(err)
-  }
+  userStore.addTodo(todoText.value)
   todoText.value = ''
 }
 const logoutFn = () => {

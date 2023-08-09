@@ -31,9 +31,7 @@ export const useUserStore = defineStore('user', () => {
     if (response.status == 200) {
       const comingTodo: Todo = { ...response.data }
       userTodos.value.todoList.push(comingTodo)
-    } else if (response.status == 404) {
-      return 'User not found'
-    }
+    } 
   }
   async function toggleTodo(comingTodoId: number) {
     const todo = userTodos.value.todoList.find((todo) => todo.todoId == comingTodoId)

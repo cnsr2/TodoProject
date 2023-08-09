@@ -24,7 +24,8 @@ async function LoginFn() {
   let check: boolean = false
   buttonDisabled.value = true
   buttonValue.value = 'Checking user'
-  const response = await axios.post(
+  try {
+    const response = await axios.post(
     'http://localhost:5292/api/User/Login',
     {
       name: userNameRef.value,
@@ -43,15 +44,22 @@ async function LoginFn() {
       userStore.login(response.data)
       router.push('/todos')
     }, 500)
-  } else if (response.status == 400) {
+  }
+  } catch (error) {
+      console.log(error.response)
+    if (error.response.status == 400) {
+    console.log(error.response.status)
     alert('Şifre yanlış.')
-  } else if (response.status == 404) {
+  } 
+  if (error.response.status == 404) {
+    console.log(error.response.status)
     alert('Kullanıcı kayıtlı değil.')
   }
   if (check == false) {
     buttonDisabled.value = false
     buttonValue.value = 'Login'
   }
+ }
   refReset()
 }
 </script>

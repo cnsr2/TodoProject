@@ -30,7 +30,8 @@ async function RegisterFn() {
   //         "valPw": passwordRef2.value
   //     })
   // })
-  const response = await axios.post(
+  try {
+    const response = await axios.post(
     'http://localhost:5292/api/User/Register',
     {
       name: userNameRef.value,
@@ -45,11 +46,15 @@ async function RegisterFn() {
     alert('Kayıt başarılı.')
     userStore.register(response.data)
     router.push('/todos')
-  } else if (response.status == 400) {
+  }  
+  } catch (error) {
+    if (error.response.status == 400) {
     alert('Kullanıcı adı daha önce alınmış.')
-  } else if (response.status == 500) {
-    alert('Şifre en az 8 karakter olmalı.')
+  } else if (error.response.status == 500) {
+    alert('Kullanıcı adı en az 3 karakter ve Şifre en az 8 karakter olmalı.')
   }
+  }
+  
   refReset()
 }
 </script>
